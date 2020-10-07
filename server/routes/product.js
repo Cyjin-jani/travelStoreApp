@@ -55,4 +55,16 @@ router.post('/', (req, res) => {
   });
 });
 
+//전체상품가져오기
+router.post('/products', (req, res) => {
+  //product collection에 들어있는 모든 상품 정보를 가져오기.
+  Product.find()
+    .populate('writer')
+    .exec((err, productInfo) => {
+      if (err) return res.status(400).json({ success: false, err });
+
+      return res.status(200).json({ success: true, productInfo });
+    });
+});
+
 module.exports = router;

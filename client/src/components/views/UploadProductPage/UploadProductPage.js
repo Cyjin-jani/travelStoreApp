@@ -55,7 +55,7 @@ function UploadProductPage(props) {
     const body = {
       //로그인된 사람의 ID
       writer: props.user.userData._id,
-      title: Title,
+      title: productName,
       description: Description,
       price: Price,
       images: Images,
