@@ -107,18 +107,26 @@ router.post('/products', (req, res) => {
   }
 });
 
-//상세페이지에서 상품 정보 하나만 가져오기.
+//상세페이지에서 상품 정보 가져오기.
 router.get('/products_by_id', (req, res) => {
 
   let type = req.query.type;
-  let productId = req.query.id;
+  let productIds = req.query.id;
+
+
+  if(type === 'array') {
+    let ids = req.query.id.split(',')
+    productIds = ids.map(item => {
+      return item
+    })
+  }
   
-  //productId를 이용해서 DB에서 productId와 같은 상품의 정보를 가져온다.
-  Product.find({_id: productId})
+  //productIds를 이용해서 DB에서 productIds와 같은 상품의 정보를 가져온다.
+  Product.find({_id: {$in: productIds } })
   .populate('writer')
   .exec((err, product) => {
     if(err) return res.status(400).send(err)
-    return res.status(200).send({success: true, product})
+    return res.status(200).send(product)
   })
 
 
